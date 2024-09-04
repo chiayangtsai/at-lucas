@@ -118,7 +118,15 @@ void leetcode_bubble_sort_descending() {
   // Q : descending sort for data
 
   // HW0904
-
+  for(int l=dataSize; l>1; l--){
+    for(int n=0; n<l-1; n++){
+      if(data[n] > data[n+1]){
+        int buf = data[n];
+        data[n] = data[n+1];
+        data[n+1] = buf;
+      }
+    }
+  }
   printf("bubble sort: ");
   for (int i = 0; i < dataSize; i++)
     printf("%d ", data[i]);
