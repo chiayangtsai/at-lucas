@@ -23,7 +23,10 @@ int main() {
   case 5:
     leetcode_shuffle_lists_ii();
     break;
-  case 6: // pointer, reference
+  case 6:
+    leetcode_revert_integer();
+    break;
+  case 7: // pointer, reference
     basic_pointer_reference();
     break;
   default:
@@ -223,25 +226,22 @@ void basic_pointer_reference() {
   // pointer : memory address of a memory
   {
     int a = 10; // &a : memory address of a
-    int* key = &a;
+    int *key = &a;
 
     *key = 5;
     printf("a= %d\n", a);
 
-    
-    int data[5]= { 3,  2, 6, 1, 8};
+    int data[5] = {3, 2, 6, 1, 8};
     //            ^   ^
     //          data  data+1
-    //   data ===  &(data[0])     <== definition         
+    //   data ===  &(data[0])     <== definition
     printf("index-0 value = %d\n", data[0]);
-    printf("index-1 value = %d\n", *(data+1)   );
+    printf("index-1 value = %d\n", *(data + 1));
 
-    for(int i=0; i< 5; i++){
-      printf("%d ",  *(data+i) ); // *(data+i) == data[i]
+    for (int i = 0; i < 5; i++) {
+      printf("%d ", *(data + i)); // *(data+i) == data[i]
     }
     printf("\n");
-    
-    
   }
   ///
 
@@ -268,4 +268,17 @@ void leetcode_bubble_sort_descending() {
   for (int i = 0; i < dataSize; i++)
     printf("%d ", data[i]);
   printf("\n");
+}
+
+int revertInteger(int num) {
+  // HW0907
+  return -1;
+}
+
+void leetcode_revert_integer() {
+  // https://zerojudge.tw/ShowProblem?problemid=a038
+
+  int num = 12345;
+  num = revertInteger(num);
+  printf("reverted number = %d (ans : 54321)\n", num);
 }
