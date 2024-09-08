@@ -5,19 +5,22 @@
 using namespace std;
 
 int main() {
-  int testID = 1;
+  int testID = 2;
 
   switch (testID) {
   case 0:
     cout << "hello world!" << endl;
     break;
-  case 1: //sort : bubble sort
+  case 1: // sort : bubble sort
     leetcode_bubble_sort();
     break;
   case 2:
     leetcode_bubble_sort_descending();
     break;
-  case 3: //pointer, reference
+  case 3:
+    leetcode_shuffle_lists();
+    break;
+  case 5: // pointer, reference
     basic_pointer_reference();
     break;
   default:
@@ -26,6 +29,27 @@ int main() {
   }
 
   return 0;
+}
+
+void leetcode_shuffle_lists() {
+
+  int arraySize = 5;
+  int a[5] = {2, 5, 3, 8, 1};
+  int b[5] = {6, 1, 8, 4, 0};
+  int c[10];
+  // Q : shuffle elements in "a" and "b" to "c" following index order
+  //   For exmaple: if a= {2, 5, 3, 8, 1} and b= {6, 1, 8, 4, 0}
+  //                expected results
+  //                c= {2, 6, 5, 1, 3, 8, 8, 4, 1, 0}
+  //
+
+  // HW0904 (optional)
+
+  printf("results c=");
+  for (int i = 0; i < arraySize * 2; i++) {
+    printf("%d ", c[i]);
+  }
+  printf("\n");
 }
 
 void leetcode_bubble_sort() {
@@ -90,9 +114,8 @@ void leetcode_bubble_sort() {
   printf("\n");
 }
 
-int addAB(int a, int b)
-{
-  int x = a+b;
+int addAB(int a, int b) {
+  int x = a + b;
   return x;
 }
 
@@ -100,14 +123,13 @@ void basic_pointer_reference() {
   int a = 5; // only valid within the { } scope
   // int : 4 bytes = 32 bits
 
-  //pointer: memory address of a variable / key to the drawer
+  // pointer: memory address of a variable / key to the drawer
 
-  //call-by-value
+  // call-by-value
   int b = 3;
   int c = addAB(a, b);
 
-  //call-by-r
-  
+  // call-by-reference
 }
 
 void leetcode_bubble_sort_descending() {
@@ -117,7 +139,15 @@ void leetcode_bubble_sort_descending() {
   // Q : descending sort for data
 
   // HW0904
-
+  for (int l = dataSize; l > 1; l--) {
+    for (int n = 0; n < l - 1; n++) {
+      if (data[n] < data[n + 1]) {
+        int buf = data[n];
+        data[n] = data[n + 1];
+        data[n + 1] = buf;
+      }
+    }
+  }
   printf("bubble sort: ");
   for (int i = 0; i < dataSize; i++)
     printf("%d ", data[i]);
