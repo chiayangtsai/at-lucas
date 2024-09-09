@@ -1,6 +1,7 @@
 #include "includes.h"
 #include <cstdlib>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -265,14 +266,31 @@ void leetcode_bubble_sort_descending() {
     }
   }
   printf("bubble sort: ");
-  for (int i = 0; i < dataSize; i++)
+  for (int i = 0; i < dataSize; i++){
     printf("%d ", data[i]);
+  }
   printf("\n");
 }
 
 int revertInteger(int num) {
+  //separate digits from each other
+  //save individual digits into an array
+  //print the array in reverse
+  int digits = log10(num)+1;
+  int powerof = 0;
+  int c[digits];
+  for(int i = 0; i < digits; i++){
+    powerof = pow(10, i+1);
+    c[i] = (num % powerof)/pow(10, i);
+    num = num - (c[i]*pow(10, i));
+  }
+  printf("reverted integer: ");
+  for(int r = 0; r < digits; r++){
+    cout << c[r] << flush;
+  }
   // HW0907
   return -1;
+  //2024.9.9: code can execute without returning errors
 }
 
 void leetcode_revert_integer() {
