@@ -284,19 +284,33 @@ int revertInteger(int num) {
     c[i] = (num % powerof)/pow(10, i);
     num = num - (c[i]*pow(10, i));
   }
-  printf("reverted integer: ");
+  int output = 0;
   for(int r = 0; r < digits; r++){
-    cout << c[r] << flush;
+    output = output*10 + c[r];
   }
+  return output;
   // HW0907
-  return -1;
   //2024.9.9: code can execute without returning errors
+}
+
+int revertIntegerNoLogPow(int num) {
+  
+  //HW0907 : don't use log and pow
+  return -1; //please modify it
 }
 
 void leetcode_revert_integer() {
   // https://zerojudge.tw/ShowProblem?problemid=a038
 
+  printf("--- version 0 -- use log ---\n");
   int num = 12345;
   num = revertInteger(num);
   printf("reverted number = %d (ans : 54321)\n", num);
+
+  printf("--- version 1 -- don't use log and pow---\n");
+  num = 12345;
+  num = revertIntegerNoLogPow(num);
+  printf("reverted number = %d (ans : 54321)\n", num);
+
+  
 }
