@@ -1,12 +1,12 @@
 #include "includes.h"
+#include <cmath>
 #include <cstdlib>
 #include <iostream>
-#include <cmath>
 
 using namespace std;
 
 int main() {
-  int testID = 6;
+  int testID = 7;
 
   switch (testID) {
   case 0:
@@ -30,13 +30,35 @@ int main() {
   case 7: // pointer, reference
     basic_pointer_reference();
     break;
+  case 8: // vector
+    basic_vector_usage();
+    break;
+  case 9:
+    leetcode_shuffle_lists_iii();
+    break;
+  case 10:
+    leetcode_two_sum();
+    break;
+  case 11:
+    leetcode_fibonacci_seq();
+    break;
+  case 12:
+    leetcode_even_odd_diff();
+    break;
   default:
     printf("not a supported test ID : %d\n", testID);
     exit(-1);
   }
 
+  // string
+  // struct
+  // cin, cout
+  //
+
   return 0;
 }
+
+void basic_vector_usage() {}
 
 #define ENABLE_SHUFFLE_OLD_CODE 0
 
@@ -88,7 +110,7 @@ void leetcode_shuffle_lists() {
   printf("\n");
 }
 
-void shuffle_two_lists(int a[], int aSize, int b[], int bSize, int c[]) {
+void shuffle_two_lists(int* a, int aSize, int* b, int bSize, int* c) {
   // define index
   // while ...
   // if ..index > aSize
@@ -144,6 +166,19 @@ void leetcode_shuffle_lists_ii() {
     printf("%d ", c[i]);
   }
   printf("\n");
+}
+
+void leetcode_shuffle_lists_iii() {
+  /*
+  vector<int> a({2, 5, 3, 8, 1});
+  vector<int> b({0, 1, 2});
+  vector<int> c({4, 7, 1, 9, 0, 5});
+  vector<int> d;
+
+  //Q: shuffle a, b, c, following index order. Results will be in d.
+  //.  expected results :
+  //.  d= {2, 0, 4, 5, 1, 7, 3, 2, 1, 8, 9, 1, 0, 5}
+*/
 }
 
 void leetcode_bubble_sort() {
@@ -213,6 +248,16 @@ int addAB(int a, int b) {
   return x;
 }
 
+void addABPointer(int x, int y, int* z)
+{
+  *z = x+y;  
+}
+
+
+void addABReference(int x, int y, int& z){ //如果寫z 並沒有連動到c; int& z 是reference 變動z的值也會同時改變c的值
+  z= x+y;
+}
+
 void basic_pointer_reference() {
   {
     int a = 5; // only valid within the { } scope
@@ -227,7 +272,7 @@ void basic_pointer_reference() {
   // pointer : memory address of a memory
   {
     int a = 10; // &a : memory address of a
-    int *key = &a;
+    int* key = &a;
 
     *key = 5;
     printf("a= %d\n", a);
@@ -241,12 +286,36 @@ void basic_pointer_reference() {
 
     for (int i = 0; i < 5; i++) {
       printf("%d ", *(data + i)); // *(data+i) == data[i]
+      //*(data + i) = 0;
     }
     printf("\n");
+
+    a = 5;
+    int b = 3;
+    int c = -1;
+    std::cout << "a=" << a << " b=" << b << " c=" << c << std::endl;
+    addABPointer(a, b, &c); //call-by-reference
+    std::cout << "a=" << a << " b=" << b << " c=" << c << std::endl;
+
   }
   ///
 
-  // call-by-reference
+  // reference : reference / memory
+  {
+    int a = 5;
+    int b = 3;
+    int c= -1;
+    std::cout << "a=" << a << " b=" << b << " c=" << c << std::endl;
+    addABReference(a, b, c); //call-by-reference
+    std::cout << "a=" << a << " b=" << b << " c=" << c << std::endl;
+
+    //int& r; (X)
+    int& r = a; //(O) 
+   
+  }
+
+
+  
 }
 
 void leetcode_bubble_sort_descending() {
@@ -266,37 +335,57 @@ void leetcode_bubble_sort_descending() {
     }
   }
   printf("bubble sort: ");
-  for (int i = 0; i < dataSize; i++){
+  for (int i = 0; i < dataSize; i++) {
     printf("%d ", data[i]);
   }
   printf("\n");
 }
 
 int revertInteger(int num) {
-  //separate digits from each other
-  //save individual digits into an array
-  //print the array in reverse
-  int digits = log10(num)+1;
+  // separate digits from each other
+  // save individual digits into an array
+  // print the array in reverse
+  int digits = log10(num) + 1;
   int powerof = 0;
   int c[digits];
-  for(int i = 0; i < digits; i++){
-    powerof = pow(10, i+1);
-    c[i] = (num % powerof)/pow(10, i);
-    num = num - (c[i]*pow(10, i));
+  for (int i = 0; i < digits; i++) {
+    powerof = pow(10, i + 1);
+    c[i] = (num % powerof) / pow(10, i);
+    num = num - (c[i] * pow(10, i));
   }
   int output = 0;
-  for(int r = 0; r < digits; r++){
-    output = output*10 + c[r];
+  for (int r = 0; r < digits; r++) {
+    output = output * 10 + c[r];
   }
   return output;
   // HW0907
-  //2024.9.9: code can execute without returning errors
+  // 2024.9.9: code can execute without returning errors
 }
 
 int revertIntegerNoLogPow(int num) {
+
+  //任何正的小數 float a = 1.2;
+  //做四捨五入 :   a = 1.2 => 1
+  //             a = 1.6 ==> 2
+  //         int b = (int)(a+0.5) 
   
-  //HW0907 : don't use log and pow
-  return -1; //please modify it
+  // HW0907 : don't use log and pow
+
+  int revert = 0;
+  while(num){
+
+    //general 
+    // get digit => num %10
+    // num = num /10
+    // revert = revert *10 + digit
+    revert = revert*10 + (num %10);
+    num /= 10;
+    //ending condition
+    //if num == 0 => break;
+    //if(num == 0) break; 
+  }
+  
+  return revert; 
 }
 
 void leetcode_revert_integer() {
@@ -311,6 +400,76 @@ void leetcode_revert_integer() {
   num = 12345;
   num = revertIntegerNoLogPow(num);
   printf("reverted number = %d (ans : 54321)\n", num);
+}
 
+void funcTwoSum(int* data, int dataSize, int sum){
+  //please print out the pairs for targetSum
+  //HW0911
   
+}
+
+
+void leetcode_two_sum() {
+  int data[9]= {5, 1, 6, 3, 9, 4, 3, 6, 5};
+  int dataSize = 9;
+  int sum = 10;
+
+  // Q: print out the pair with sum = 10
+  //    expected results : (5, 5), (1, 9), (6, 4)
+  //
+  //    NOTE: Don't print out the repeated pair
+  //    NOTE: integer k range  0<= k <= 99
+  funcTwoSum(data, dataSize, sum);
+  
+}
+
+int getFibSeq(int k) {
+  //HW0911
+  return -1; // please modify it.
+}
+void leetcode_fibonacci_seq() {
+
+  // Fibonacci (費氏函數)
+  // Formula : X(n) = X(n-1) + X(n-2)
+  //           X(0) = 0, X(1) = 1
+  //  {0,   1,   1,    2, 3, 5, 8, 13....}
+  //  X(0) X(1) X(2)  X(3) ........ X(N-1)
+  //
+  //
+  //  Q: Given k, derive X(k)
+  //.    For example : X(0) = 0, when k=0
+  //.                  X(2) = 1, when k=2
+  //                   X(4) = 3, when k=4
+
+  int k = 10;
+  int Xk = getFibSeq(k);
+
+  printf("X%d= %d\n", k, Xk);
+}
+
+int funcEvenOddDiff(int x) { 
+  //HW0911: don't use any built-in function
+  //     for example : abs(x) => |x|
+  return -1; //please modify it
+}
+
+void leetcode_even_odd_diff() {
+  // from zero judge - APCS
+  // https://zerojudge.tw/ShowProblem?problemid=c290
+  /*
+  將一個十進位正整數的奇數位數的和稱為A ，偶數位數的和稱為B，則A與B的絕對差值 |A
+  －B| 稱為這個正整數的秘密差。
+
+  例如： 263541 的奇數位和 A = 6+5+1 =12，偶數位的和 B = 2+3+4 = 9 ，所以 263541
+  的秘密差是 |12 －9|= 3 。
+
+  給定一個 十進位正整數 X，請找出 X的秘密差。
+  */
+  int X = 263541;
+  int diff = funcEvenOddDiff(X);
+  printf("diff =%d (ans : 3)\n", diff);
+
+  X = 131;
+  diff = funcEvenOddDiff(X);
+  printf("diff =%d (ans : 1)\n", diff);
 }
