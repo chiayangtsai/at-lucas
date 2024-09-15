@@ -2,11 +2,12 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 int main() {
-  int testID = 7;
+  int testID = 11;
 
   switch (testID) {
   case 0:
@@ -58,7 +59,39 @@ int main() {
   return 0;
 }
 
-void basic_vector_usage() {}
+void basic_vector_usage() {
+  //static memory
+  {
+    int a[5] = {4, 3, 5, 2, 1};
+  }
+  //dynamic memory
+  {
+    //TBV
+  }
+  //vector
+  {
+    vector<int> a({4, 1, 2});
+    
+    a= {4, 3, 5, 2, 1};
+
+    for(int i=0; i< a.size(); i++){
+      printf("%d ", a[i]);
+    }
+    printf("\n");
+     
+  }
+  //push_back
+  {
+    vector<int> a({4, 1, 2});
+    a.push_back(3);
+    for(int i=0; i< a.size(); i++){
+      printf("%d ", a[i]);
+    }
+    printf("\n");
+  }
+  //TBV
+  
+}
 
 #define ENABLE_SHUFFLE_OLD_CODE 0
 
@@ -110,7 +143,7 @@ void leetcode_shuffle_lists() {
   printf("\n");
 }
 
-void shuffle_two_lists(int* a, int aSize, int* b, int bSize, int* c) {
+void shuffle_two_lists(int *a, int aSize, int *b, int bSize, int *c) {
   // define index
   // while ...
   // if ..index > aSize
@@ -248,14 +281,12 @@ int addAB(int a, int b) {
   return x;
 }
 
-void addABPointer(int x, int y, int* z)
-{
-  *z = x+y;  
-}
+void addABPointer(int x, int y, int *z) { *z = x + y; }
 
-
-void addABReference(int x, int y, int& z){ //如果寫z 並沒有連動到c; int& z 是reference 變動z的值也會同時改變c的值
-  z= x+y;
+void addABReference(int x, int y,
+                    int &z) { //如果寫z 並沒有連動到c; but int& z是reference
+                              //變動z的值也會同時改變c的值
+  z = x + y;
 }
 
 void basic_pointer_reference() {
@@ -272,7 +303,7 @@ void basic_pointer_reference() {
   // pointer : memory address of a memory
   {
     int a = 10; // &a : memory address of a
-    int* key = &a;
+    int *key = &a;
 
     *key = 5;
     printf("a= %d\n", a);
@@ -294,9 +325,8 @@ void basic_pointer_reference() {
     int b = 3;
     int c = -1;
     std::cout << "a=" << a << " b=" << b << " c=" << c << std::endl;
-    addABPointer(a, b, &c); //call-by-reference
+    addABPointer(a, b, &c); // call-by-reference
     std::cout << "a=" << a << " b=" << b << " c=" << c << std::endl;
-
   }
   ///
 
@@ -304,18 +334,14 @@ void basic_pointer_reference() {
   {
     int a = 5;
     int b = 3;
-    int c= -1;
+    int c = -1;
     std::cout << "a=" << a << " b=" << b << " c=" << c << std::endl;
-    addABReference(a, b, c); //call-by-reference
+    addABReference(a, b, c); // call-by-reference
     std::cout << "a=" << a << " b=" << b << " c=" << c << std::endl;
 
-    //int& r; (X)
-    int& r = a; //(O) 
-   
+    // int& r; (X)
+    int &r = a; //(O)
   }
-
-
-  
 }
 
 void leetcode_bubble_sort_descending() {
@@ -367,25 +393,25 @@ int revertIntegerNoLogPow(int num) {
   //任何正的小數 float a = 1.2;
   //做四捨五入 :   a = 1.2 => 1
   //             a = 1.6 ==> 2
-  //         int b = (int)(a+0.5) 
-  
+  //         int b = (int)(a+0.5)
+
   // HW0907 : don't use log and pow
 
   int revert = 0;
-  while(num){
+  while (num) {
 
-    //general 
-    // get digit => num %10
-    // num = num /10
-    // revert = revert *10 + digit
-    revert = revert*10 + (num %10);
+    // general
+    //  get digit => num %10
+    //  num = num /10
+    //  revert = revert *10 + digit
+    revert = revert * 10 + (num % 10);
     num /= 10;
-    //ending condition
-    //if num == 0 => break;
-    //if(num == 0) break; 
+    // ending condition
+    // if num == 0 => break;
+    // if(num == 0) break;
   }
-  
-  return revert; 
+
+  return revert;
 }
 
 void leetcode_revert_integer() {
@@ -402,30 +428,45 @@ void leetcode_revert_integer() {
   printf("reverted number = %d (ans : 54321)\n", num);
 }
 
-void funcTwoSum(int* data, int dataSize, int sum){
-  //please print out the pairs for targetSum
-  //HW0911
-  
+void funcTwoSum(int *data, int dataSize, int sum) {
+  // please print out the pairs for targetSum
+  // HW0911
+  // HW0915
+  // bubble sort
 }
 
-
-void leetcode_two_sum() {
-  int data[9]= {5, 1, 6, 3, 9, 4, 3, 6, 5};
+void leetcode_two_sum() { 
+  int data[9] = {5, 1, 6, 3, 9, 4, 3, 6, 5};
   int dataSize = 9;
   int sum = 10;
 
   // Q: print out the pair with sum = 10
-  //    expected results : (5, 5), (1, 9), (6, 4)
+  //    expected results : (5, 5), (1, 9), (6, 4), (4, 6)
   //
-  //    NOTE: Don't print out the repeated pair
   //    NOTE: integer k range  0<= k <= 99
   funcTwoSum(data, dataSize, sum);
-  
 }
 
+// f(n)= n+2 : O(N)
+// f(n) = n^2 : O(N^2)
+
+
 int getFibSeq(int k) {
-  //HW0911
-  return -1; // please modify it.
+  // HW0911
+  int i1 = 0;
+  int i2 = 1;
+  int n;
+  if (k == 0) {
+    return i1;
+  } else {
+    for (int i = 2; i <= k; i++) 
+    {
+      n = i1 + i2;
+      i1 = i2;
+      i2 = n;
+    }
+  }
+  return i2;
 }
 void leetcode_fibonacci_seq() {
 
@@ -440,17 +481,114 @@ void leetcode_fibonacci_seq() {
   //.    For example : X(0) = 0, when k=0
   //.                  X(2) = 1, when k=2
   //                   X(4) = 3, when k=4
+  // time complexity : O(N)
 
+  // O(N^2)
+  //  for()
+  //    for()
   int k = 10;
+  //O(N)
   int Xk = getFibSeq(k);
 
   printf("X%d= %d\n", k, Xk);
 }
 
-int funcEvenOddDiff(int x) { 
-  //HW0911: don't use any built-in function
-  //     for example : abs(x) => |x|
-  return -1; //please modify it
+int funcEvenOddDiff(int x) {
+  /*
+  int k;
+  if(x > 0) k = 1;
+  else k = 2;
+
+  //C style
+  k = (x>0) ? 1 : 2;
+
+  //python: k= 1 if x> 0 else 2
+  */
+  enum _IMPLT_ID {
+    IMPLT_ORIG = 0, // original homework implementation
+    IMPLT_FIRST,    // 1st improved version
+    IMPLT_SECOND, 
+  };
+
+  int flag = IMPLT_FIRST;
+  int res;
+
+  if (flag == IMPLT_ORIG) {
+    // HW0911: don't use any built-in function
+    //      for example : abs(x) => |x|
+    int evensum = 0;
+    int oddsum = 0;
+    int count = 0;
+    int xreverse = 0;
+    while (x) {
+      xreverse = xreverse * 10 + (x % 10);
+      x /= 10;
+      count += 1;
+    }
+    // static  :  靜態宣告
+    int digits[count]; //? memory management may have "memory violation" problem
+
+    count = 0;
+    while (xreverse) {
+      digits[count] = xreverse % 10;
+      xreverse /= 10;
+      count += 1;
+    }
+    for (int i = 0; i < count; i++) {
+      if (i % 2 == 0) {
+        evensum += digits[i];
+      } else {
+        oddsum += digits[i];
+      }
+    }
+    res = oddsum - evensum;
+  } else if (flag == IMPLT_FIRST) {
+    /*
+       12345 => 5 odd
+       1234 => 4 even
+       123 =>3 odd
+       12 =>2 even
+       1 =>1 odd
+    */
+    int evensum = 0;
+    int oddsum = 0;
+    int count = 0;
+    while (x) {
+      // get the digit
+      int digit = (x % 10);
+
+      if (count % 2)
+        evensum += digit;
+      else
+        oddsum += digit;
+
+      // shift out the digit from x
+      x /= 10;
+    }
+
+    int diff = oddsum - evensum;
+
+    res = (diff > 0) ? diff : (-diff);
+
+  } else if (flag == IMPLT_SECOND) // 2nd improved version
+  {
+    // (a0+ a2 + a4) - (a1+a3+a5) = diff
+    // (a0-a1) + (a2- a3) + (a4- a5) = diff
+    int diff = 0;
+    while(x){
+      diff += (x%10);
+      x /= 10;
+
+      diff -= (x%10);
+      x/= 10;
+    }
+    res = (diff > 0) ? diff : (-diff);
+    
+  } else {
+    printf("wrong flag value: %d\n", flag);
+    exit(-1);
+  }
+  return res;
 }
 
 void leetcode_even_odd_diff() {
