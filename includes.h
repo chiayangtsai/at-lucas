@@ -11,3 +11,7 @@ void leetcode_two_sum();
 void leetcode_fibonacci_seq();
 void leetcode_shuffle_lists_iii();
 void leetcode_even_odd_diff();
+void basic_string_usage();
+void leetcode_merge_sorted_lists();
+void leetcode_letters_histogram();
+void basic_class_struct();

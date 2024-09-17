@@ -7,7 +7,7 @@
 using namespace std;
 
 int main() {
-  int testID = 11;
+  int testID = 10;
 
   switch (testID) {
   case 0:
@@ -46,6 +46,18 @@ int main() {
   case 12:
     leetcode_even_odd_diff();
     break;
+  case 14:
+    leetcode_merge_sorted_lists();
+    break;
+  case 15: // string
+    basic_string_usage();
+    break;
+  case 16:
+    leetcode_letters_histogram();
+    break;
+  case 17: // struct, class, object
+    basic_class_struct();
+    break;
   default:
     printf("not a supported test ID : %d\n", testID);
     exit(-1);
@@ -59,38 +71,46 @@ int main() {
   return 0;
 }
 
+void basic_class_struct() {}
+void leetcode_letters_histogram() {}
+
+void leetcode_merge_sorted_lists() {}
+
+void basic_string_usage() {
+  // C-style usage & ASCII codes
+
+  // C++ style usage
+
+  // iterations
+}
+
 void basic_vector_usage() {
-  //static memory
+  // static memory
+  { int a[5] = {4, 3, 5, 2, 1}; }
+  // dynamic memory
   {
-    int a[5] = {4, 3, 5, 2, 1};
-  }
-  //dynamic memory
-  {
-    //TBV
-  }
-  //vector
+      // TBV
+  } // vector
   {
     vector<int> a({4, 1, 2});
-    
-    a= {4, 3, 5, 2, 1};
 
-    for(int i=0; i< a.size(); i++){
+    a = {4, 3, 5, 2, 1};
+
+    for (int i = 0; i < a.size(); i++) {
       printf("%d ", a[i]);
     }
     printf("\n");
-     
   }
-  //push_back
+  // push_back
   {
     vector<int> a({4, 1, 2});
     a.push_back(3);
-    for(int i=0; i< a.size(); i++){
+    for (int i = 0; i < a.size(); i++) {
       printf("%d ", a[i]);
     }
     printf("\n");
   }
-  //TBV
-  
+  // TBV
 }
 
 #define ENABLE_SHUFFLE_OLD_CODE 0
@@ -433,9 +453,31 @@ void funcTwoSum(int *data, int dataSize, int sum) {
   // HW0911
   // HW0915
   // bubble sort
+  vector<int> pairs{};
+  for (int i = 0; i < dataSize - 1; i++) {
+    /*
+    i = 0; data[0] = 5; compare following pairs: (5,1) (5,6) (5,3)...(5,5)
+    i = 1; data[1] = 1; compare: (1,6) (1,3) (1,9)...(1,5)
+    i = 2; data[2] = 6; compare: (6,3) (6,9) (6,4)...(6,5)
+    ...i = 5
+    */
+    for (int j = 1; j < dataSize; j++) {
+      if (data[i] + data[j] ==
+          sum) { // checks if the sum of an item with any of the other items is
+                 // equal to the given "sum" value
+        // i = 0; checks (5,1)
+        // i = 1; checks (1)
+        pairs.push_back(data[i]);
+        pairs.push_back(data[j]);
+      }
+    }
+  }
+  for (int k = 0; k < (pairs.size()) / 2; k += 2) {
+    cout << "(" << pairs[k] << ", " << pairs[k + 1] << ")" << endl;
+  }
 }
 
-void leetcode_two_sum() { 
+void leetcode_two_sum() {
   int data[9] = {5, 1, 6, 3, 9, 4, 3, 6, 5};
   int dataSize = 9;
   int sum = 10;
@@ -450,7 +492,6 @@ void leetcode_two_sum() {
 // f(n)= n+2 : O(N)
 // f(n) = n^2 : O(N^2)
 
-
 int getFibSeq(int k) {
   // HW0911
   int i1 = 0;
@@ -459,8 +500,7 @@ int getFibSeq(int k) {
   if (k == 0) {
     return i1;
   } else {
-    for (int i = 2; i <= k; i++) 
-    {
+    for (int i = 2; i <= k; i++) {
       n = i1 + i2;
       i1 = i2;
       i2 = n;
@@ -487,7 +527,7 @@ void leetcode_fibonacci_seq() {
   //  for()
   //    for()
   int k = 10;
-  //O(N)
+  // O(N)
   int Xk = getFibSeq(k);
 
   printf("X%d= %d\n", k, Xk);
@@ -507,7 +547,7 @@ int funcEvenOddDiff(int x) {
   enum _IMPLT_ID {
     IMPLT_ORIG = 0, // original homework implementation
     IMPLT_FIRST,    // 1st improved version
-    IMPLT_SECOND, 
+    IMPLT_SECOND,
   };
 
   int flag = IMPLT_FIRST;
@@ -575,15 +615,15 @@ int funcEvenOddDiff(int x) {
     // (a0+ a2 + a4) - (a1+a3+a5) = diff
     // (a0-a1) + (a2- a3) + (a4- a5) = diff
     int diff = 0;
-    while(x){
-      diff += (x%10);
+    while (x) {
+      diff += (x % 10);
       x /= 10;
 
-      diff -= (x%10);
-      x/= 10;
+      diff -= (x % 10);
+      x /= 10;
     }
     res = (diff > 0) ? diff : (-diff);
-    
+
   } else {
     printf("wrong flag value: %d\n", flag);
     exit(-1);
