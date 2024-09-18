@@ -85,6 +85,12 @@ void basic_string_usage() {
 }
 
 void basic_vector_usage() {
+  //.size() : number of elements/
+  //.push_back(element) : append an element to the end
+  //.begin() : the 1st iterator
+  //.end() : the last iterator
+
+  
   // static memory
   { int a[5] = {4, 3, 5, 2, 1}; }
   // dynamic memory
@@ -110,7 +116,17 @@ void basic_vector_usage() {
     }
     printf("\n");
   }
-  // TBV
+  // iterator =\= pointer  , but similar
+  {
+    //a= {  4,   3,   5,   2,   1}
+    //     ^    ^    ^    ^    ^
+    // &(a[0])  a+1               
+    //     | 4  | 3  |  5 |  2 |  1  |
+    //     ^ .begin()                ^ .end()
+        
+
+    
+  }
 }
 
 #define ENABLE_SHUFFLE_OLD_CODE 0
@@ -448,12 +464,37 @@ void leetcode_revert_integer() {
   printf("reverted number = %d (ans : 54321)\n", num);
 }
 
+#define TWOSUM_NON_REPEATED_PAIR 1 
+
 void funcTwoSum(int *data, int dataSize, int sum) {
   // please print out the pairs for targetSum
   // HW0911
   // HW0915
   // bubble sort
-  vector<int> pairs{};
+
+  //time complexity : O(N^2)
+
+
+  // Mindset : pair, mapping, ==> dictionary / Look-up Table (LUT) / Hash table
+  //algorithm : use a LUT to indicate the "appearance"
+  //     Example : {5, 1, 6, 3, 9, 4, 3, 6, 5};
+  //      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10........, 99
+  //         1     1  1  1  1        1
+
+  #if TWOSUM_NON_REPEATED_PAIR
+    int flags[100];
+    for(int i=0; i< 100; i++){
+      flags[i] = 0;
+    }
+
+    for(int i=0; i< dataSize; i++){
+      int val = data[i];
+      flags[ val ]  = 1;
+    }
+
+  #endif
+  
+  vector<int> pairs;
   for (int i = 0; i < dataSize - 1; i++) {
     /*
     i = 0; data[0] = 5; compare following pairs: (5,1) (5,6) (5,3)...(5,5)
@@ -461,21 +502,90 @@ void funcTwoSum(int *data, int dataSize, int sum) {
     i = 2; data[2] = 6; compare: (6,3) (6,9) (6,4)...(6,5)
     ...i = 5
     */
-    for (int j = 1; j < dataSize; j++) {
-      if (data[i] + data[j] ==
-          sum) { // checks if the sum of an item with any of the other items is
-                 // equal to the given "sum" value
+  #if TWOSUM_NON_REPEATED_PAIR
+      if( flags[  data[i]  ] == 0){
+        continue;
+      }
+  #endif
+
+    for (int j = i + 1; j < dataSize; j++) { //j不能從1開始找
+      // checks if the sum of an item with any of the other items is
+      if (data[i] + data[j] == sum) 
+      {
+#if TWOSUM_NON_REPEATED_PAIR
+        if( flags[  data[i]  ] == 0){
+          continue;
+        }
+#endif
+        // equal to the given "sum" value
         // i = 0; checks (5,1)
         // i = 1; checks (1)
         pairs.push_back(data[i]);
         pairs.push_back(data[j]);
+
+#if TWOSUM_NON_REPEATED_PAIR
+        flags[ data[i] ] = 0;
+        flags[ data[j] ] = 0;
+#endif
+
+        
       }
     }
   }
-  for (int k = 0; k < (pairs.size()) / 2; k += 2) {
-    cout << "(" << pairs[k] << ", " << pairs[k + 1] << ")" << endl;
+
+  for (int k = 0; k < (pairs.size()) / 2; k++) {
+    cout << "(" << pairs[2*k] << ", " << pairs[2*k + 1] << ")" << endl;
   }
+
+
 }
+
+void funcTwoSumLUT(int *data, int dataSize, int sum)
+{
+  int table[100];
+  //O(1)
+  for(int i = 0; i < 100; i++){
+    table[i] = 0;
+  }
+
+  //O(N)
+  for(int j = 0; j < dataSize; j++){
+    int value = data[j];
+    table[value] = 1;
+  }
+  // Double -loop 
+  //{5, 1, 6, 3, 9, 4, 3, 6, 5};
+  // ^ 
+  //    ^^^^^^^^^^^^^^^^^^^^^^^ for loop
+
+  //LUT
+  //{5, 1, 6, 3, 9, 4, 3, 6, 5};
+  //    ^  
+  //   pair == 9  -> check table[9]
+  
+  // loop -> get data[i]
+  //     => check if pair exists
+  //     if pair exists => print, set table[value] and table[pair] = 0 
+  //     //otherwise, continue
+
+  //O(N)
+  for(int i = 0; i < dataSize; i++){
+    int val = data[i];
+    int pairVal = sum-val;
+    if(table[pairVal] == 1){
+      //pairVal exists
+      //print out the val and pairVal
+      printf("(%d %d)\n", val, pairVal);
+
+      table[val] = table[pairVal] = 0;
+    }
+      
+  }
+  
+  
+}
+
+
 
 void leetcode_two_sum() {
   int data[9] = {5, 1, 6, 3, 9, 4, 3, 6, 5};
@@ -483,10 +593,26 @@ void leetcode_two_sum() {
   int sum = 10;
 
   // Q: print out the pair with sum = 10
-  //    expected results : (5, 5), (1, 9), (6, 4), (4, 6)
+  //    expected results : (5, 5), (1, 9), (6, 4)
   //
   //    NOTE: integer k range  0<= k <= 99
-  funcTwoSum(data, dataSize, sum);
+  //    NOTE : Don't print out repeasted pairs
+
+  enum _IMPLT_ID
+  {
+    IMPLT_DOUBLE_LOOP = 0, //O(N^2)
+    IMPLT_LUT, //O(N)
+   };
+
+  int impltID = IMPLT_LUT;
+
+  if(impltID == IMPLT_DOUBLE_LOOP){
+    funcTwoSum(data, dataSize, sum);
+  }
+  else if(impltID == IMPLT_LUT){
+    funcTwoSumLUT(data, dataSize, sum); 
+  }
+  
 }
 
 // f(n)= n+2 : O(N)
