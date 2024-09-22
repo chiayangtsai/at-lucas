@@ -4,10 +4,16 @@
 #include <iostream>
 #include <vector>
 
+
+// Goolge : c++ keyword
+//  - Cplusplus
+//  - geeksforgeeks
+//  - stackoverflow
+
 using namespace std;
 
 int main() {
-  int testID = 10;
+  int testID = 8;
 
   switch (testID) {
   case 0:
@@ -74,7 +80,18 @@ int main() {
 void basic_class_struct() {}
 void leetcode_letters_histogram() {}
 
-void leetcode_merge_sorted_lists() {}
+void leetcode_merge_sorted_lists() {
+  vector<int> x({6, 8, 10, 20, 21, 30});
+  vector<int> y({1, 3, 4, 7, 14, 16, 100, 110});
+  vector<int> z;
+
+  //Q: x and y are sorted data. merge x and y to z as a sorted data as well.
+  // z = {1, 3, 4, 6, 7, 8, 10, 14, 16, 20, 21, 30, 100, 110}
+  //
+  // NOTE: time complexity must be O(N)
+  //HW0922 : optional
+  
+}
 
 void basic_string_usage() {
   // C-style usage & ASCII codes
@@ -87,15 +104,22 @@ void basic_string_usage() {
 void basic_vector_usage() {
   //.size() : number of elements/
   //.push_back(element) : append an element to the end
-  //.begin() : the 1st iterator
+  //.pop_back() : pop out the last element
+  //.begin() : the 1st iterator (第一項的memory address)
   //.end() : the last iterator
+  //.front(): the 1st reference
+  //.back() : the last reference
+  //.erase( iterator ) : erase the element @ iterator position 
+  //.insert( iterator, element) : insert new element @ iterator position
+  //
+  //.empty() : return true if .size() == 0
 
-  
   // static memory
-  { int a[5] = {4, 3, 5, 2, 1}; }
-  // dynamic memory
   {
-      // TBV
+    int a[5] = {4, 3, 5, 2, 1};
+    // dynamic memory
+
+    // TBV
   } // vector
   {
     vector<int> a({4, 1, 2});
@@ -117,18 +141,104 @@ void basic_vector_usage() {
     printf("\n");
   }
   // iterator =\= pointer  , but similar
+  printf("==== iterator ====== \n");
   {
-    //a= {  4,   3,   5,   2,   1}
-    //     ^    ^    ^    ^    ^
-    // &(a[0])  a+1               
-    //     | 4  | 3  |  5 |  2 |  1  |
-    //     ^ .begin()                ^ .end()
-        
+    //       a= {  4,     3,       5,     2,      1}
+    //            ^       ^       ^       ^       ^
+    // pointer  &(a[0])  &(a[1]) &(a[2])  &(a[3]) &(a[4])
 
+    //      after erasing "5",
+
+    //       a= {  4,     3,              2,       1}
+    //            ^       ^               ^        ^
+    // pointer    a      a+1             a+2       a+3    (X)
+    //          &(a[0])  &(a[1])       &(a[2])    &(a[3]) (0)
+    // iterator  it      it+1            it+2      it+3   (0)
+
+    //      a=  | 4   |  3    |  5    |  2   | 1   |
+    //          ^ .begin()                          ^ .end()
+
+    vector<int> a({4, 3, 5, 2, 1});
+
+    // method 1: array index
+    for (int i = 0; i < a.size(); i++) {
+      printf("%d ", a[i]);
+    }
+    printf("\n");
+
+    // method 2: iterator
+    for (vector<int>::iterator it = a.begin(); it != a.end(); it++) {
+      printf("%d ", *it);
+    }
+    printf("\n");
+
+    int x = 4;
+    auto y = x;
+
+    // method 3 : use auto to simplified iterator claim
+    for (auto it = a.begin(); it != a.end(); it++) {
+      printf("%d ", *it);
+    }
+    printf("\n");
+
+    // method 4 : use "python-like" experssion
+    /*
+    list = [3, 5, 6, 2, 3]
+    for x in list:
+    */
+    for (auto &x : a) // => for any x in a; auto& x = a[0] 拿ref即跳過copy值的動作
+    {
+      printf("%d ", x);
+      x = 0;
+    }
+    printf("\n");
+
+    for (auto x : a) {
+      printf("%d ", x);
+    }
+    printf("\n");
+  }
+  printf("==== front(), back() ====== \n");
+  {
+    vector<int> a({8, 3, 1, 6, 2, 5});
+    // a= [4, 5, 1, 8, 2]
+    //    a[0]        a[len(a)-1] == a[-1]
+    printf("the first element : %d\n", a.front());
+    printf("the last element : %d\n", a.back());
+
+    a.front() = 0;
+    a.back() = -1;
+    
+    for(auto it = a.begin(); it != a.end(); it++){
+      printf("%d ", *it);
+    } 
+    printf("\n");
+  }
+  printf("==== .erase(iterator) , .insert(iterator, element) ====== \n");
+  {
+    vector<int> x({5, 2, 7, 1, 2});
+    //            | 5 |  2  |  7  |  1  |  2  |
+    //            ^ .begin()                  ^ .end()
+    //            it  it+1  it+2  it+3 .....
+    //Q : erase index-2 element from x
+    auto it = x.begin()+2;
+    x.erase(it);
+    for(auto y : x){
+      printf("%d ", y);
+    }
+    printf("\n");
+
+    //Q : insert 0 to the last position
+    it = x.end();
+    x.insert(it, 0);
+    for(auto y : x){
+      printf("%d ", y);
+    }
+    printf("\n");
     
   }
+  
 }
-
 #define ENABLE_SHUFFLE_OLD_CODE 0
 
 void leetcode_shuffle_lists() {
@@ -238,7 +348,7 @@ void leetcode_shuffle_lists_ii() {
 }
 
 void leetcode_shuffle_lists_iii() {
-  /*
+  
   vector<int> a({2, 5, 3, 8, 1});
   vector<int> b({0, 1, 2});
   vector<int> c({4, 7, 1, 9, 0, 5});
@@ -247,7 +357,8 @@ void leetcode_shuffle_lists_iii() {
   //Q: shuffle a, b, c, following index order. Results will be in d.
   //.  expected results :
   //.  d= {2, 0, 4, 5, 1, 7, 3, 2, 1, 8, 9, 1, 0, 5}
-*/
+  //HW0922 : 
+  //also print out the vector results of d
 }
 
 void leetcode_bubble_sort() {
@@ -464,7 +575,7 @@ void leetcode_revert_integer() {
   printf("reverted number = %d (ans : 54321)\n", num);
 }
 
-#define TWOSUM_NON_REPEATED_PAIR 1 
+#define TWOSUM_NON_REPEATED_PAIR 1
 
 void funcTwoSum(int *data, int dataSize, int sum) {
   // please print out the pairs for targetSum
@@ -472,28 +583,28 @@ void funcTwoSum(int *data, int dataSize, int sum) {
   // HW0915
   // bubble sort
 
-  //time complexity : O(N^2)
+  // time complexity : O(N^2)
 
-
-  // Mindset : pair, mapping, ==> dictionary / Look-up Table (LUT) / Hash table
-  //algorithm : use a LUT to indicate the "appearance"
+  // Mindset : pair, mapping, ==> dictionary / Look-up Table (LUT) / Hash
+  // table
+  // algorithm : use a LUT to indicate the "appearance"
   //     Example : {5, 1, 6, 3, 9, 4, 3, 6, 5};
   //      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10........, 99
   //         1     1  1  1  1        1
 
-  #if TWOSUM_NON_REPEATED_PAIR
-    int flags[100];
-    for(int i=0; i< 100; i++){
-      flags[i] = 0;
-    }
+#if TWOSUM_NON_REPEATED_PAIR
+  int flags[100];
+  for (int i = 0; i < 100; i++) {
+    flags[i] = 0;
+  }
 
-    for(int i=0; i< dataSize; i++){
-      int val = data[i];
-      flags[ val ]  = 1;
-    }
+  for (int i = 0; i < dataSize; i++) {
+    int val = data[i];
+    flags[val] = 1;
+  }
 
-  #endif
-  
+#endif
+
   vector<int> pairs;
   for (int i = 0; i < dataSize - 1; i++) {
     /*
@@ -502,18 +613,17 @@ void funcTwoSum(int *data, int dataSize, int sum) {
     i = 2; data[2] = 6; compare: (6,3) (6,9) (6,4)...(6,5)
     ...i = 5
     */
-  #if TWOSUM_NON_REPEATED_PAIR
-      if( flags[  data[i]  ] == 0){
-        continue;
-      }
-  #endif
-
-    for (int j = i + 1; j < dataSize; j++) { //j不能從1開始找
-      // checks if the sum of an item with any of the other items is
-      if (data[i] + data[j] == sum) 
-      {
 #if TWOSUM_NON_REPEATED_PAIR
-        if( flags[  data[i]  ] == 0){
+    if (flags[data[i]] == 0) {
+      continue;
+    }
+#endif
+
+    for (int j = i + 1; j < dataSize; j++) { // j不能從1開始找
+      // checks if the sum of an item with any of the other items is
+      if (data[i] + data[j] == sum) {
+#if TWOSUM_NON_REPEATED_PAIR
+        if (flags[data[i]] == 0) {
           continue;
         }
 #endif
@@ -524,68 +634,58 @@ void funcTwoSum(int *data, int dataSize, int sum) {
         pairs.push_back(data[j]);
 
 #if TWOSUM_NON_REPEATED_PAIR
-        flags[ data[i] ] = 0;
-        flags[ data[j] ] = 0;
+        flags[data[i]] = 0;
+        flags[data[j]] = 0;
 #endif
-
-        
       }
     }
   }
 
   for (int k = 0; k < (pairs.size()) / 2; k++) {
-    cout << "(" << pairs[2*k] << ", " << pairs[2*k + 1] << ")" << endl;
+    cout << "(" << pairs[2 * k] << ", " << pairs[2 * k + 1] << ")" << endl;
   }
-
-
 }
 
-void funcTwoSumLUT(int *data, int dataSize, int sum)
-{
+void funcTwoSumLUT(int *data, int dataSize, int sum) {
   int table[100];
-  //O(1)
-  for(int i = 0; i < 100; i++){
+  // O(1)
+  for (int i = 0; i < 100; i++) {
     table[i] = 0;
   }
 
-  //O(N)
-  for(int j = 0; j < dataSize; j++){
+  // O(N)
+  for (int j = 0; j < dataSize; j++) {
     int value = data[j];
     table[value] = 1;
   }
-  // Double -loop 
+  // Double -loop
   //{5, 1, 6, 3, 9, 4, 3, 6, 5};
-  // ^ 
+  // ^
   //    ^^^^^^^^^^^^^^^^^^^^^^^ for loop
 
-  //LUT
+  // LUT
   //{5, 1, 6, 3, 9, 4, 3, 6, 5};
-  //    ^  
-  //   pair == 9  -> check table[9]
-  
+  //     ^
+  //    pair == 9  -> check table[9]
+
   // loop -> get data[i]
   //     => check if pair exists
-  //     if pair exists => print, set table[value] and table[pair] = 0 
+  //     if pair exists => print, set table[value] and table[pair] = 0
   //     //otherwise, continue
 
-  //O(N)
-  for(int i = 0; i < dataSize; i++){
+  // O(N)
+  for (int i = 0; i < dataSize; i++) {
     int val = data[i];
-    int pairVal = sum-val;
-    if(table[pairVal] == 1){
-      //pairVal exists
-      //print out the val and pairVal
+    int pairVal = sum - val;
+    if (table[pairVal] == 1) {
+      // pairVal exists
+      // print out the val and pairVal
       printf("(%d %d)\n", val, pairVal);
 
       table[val] = table[pairVal] = 0;
     }
-      
   }
-  
-  
 }
-
-
 
 void leetcode_two_sum() {
   int data[9] = {5, 1, 6, 3, 9, 4, 3, 6, 5};
@@ -598,21 +698,18 @@ void leetcode_two_sum() {
   //    NOTE: integer k range  0<= k <= 99
   //    NOTE : Don't print out repeasted pairs
 
-  enum _IMPLT_ID
-  {
-    IMPLT_DOUBLE_LOOP = 0, //O(N^2)
-    IMPLT_LUT, //O(N)
-   };
+  enum _IMPLT_ID {
+    IMPLT_DOUBLE_LOOP = 0, // O(N^2)
+    IMPLT_LUT,             // O(N)
+  };
 
   int impltID = IMPLT_LUT;
 
-  if(impltID == IMPLT_DOUBLE_LOOP){
+  if (impltID == IMPLT_DOUBLE_LOOP) {
     funcTwoSum(data, dataSize, sum);
+  } else if (impltID == IMPLT_LUT) {
+    funcTwoSumLUT(data, dataSize, sum);
   }
-  else if(impltID == IMPLT_LUT){
-    funcTwoSumLUT(data, dataSize, sum); 
-  }
-  
 }
 
 // f(n)= n+2 : O(N)
@@ -692,7 +789,8 @@ int funcEvenOddDiff(int x) {
       count += 1;
     }
     // static  :  靜態宣告
-    int digits[count]; //? memory management may have "memory violation" problem
+    int digits[count]; //? memory management may have "memory violation"
+                       // problem
 
     count = 0;
     while (xreverse) {
@@ -761,11 +859,11 @@ void leetcode_even_odd_diff() {
   // from zero judge - APCS
   // https://zerojudge.tw/ShowProblem?problemid=c290
   /*
-  將一個十進位正整數的奇數位數的和稱為A ，偶數位數的和稱為B，則A與B的絕對差值 |A
-  －B| 稱為這個正整數的秘密差。
+  將一個十進位正整數的奇數位數的和稱為A ，偶數位數的和稱為B，則A與B的絕對差值
+  |A －B| 稱為這個正整數的秘密差。
 
-  例如： 263541 的奇數位和 A = 6+5+1 =12，偶數位的和 B = 2+3+4 = 9 ，所以 263541
-  的秘密差是 |12 －9|= 3 。
+  例如： 263541 的奇數位和 A = 6+5+1 =12，偶數位的和 B = 2+3+4 = 9 ，所以
+  263541 的秘密差是 |12 －9|= 3 。
 
   給定一個 十進位正整數 X，請找出 X的秘密差。
   */
