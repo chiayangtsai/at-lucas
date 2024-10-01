@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <string>
 #include <vector>
 
 // Goolge : c++ keyword
@@ -12,7 +13,7 @@
 using namespace std;
 
 int main() {
-  int testID = 8;
+  int testID = 17;
 
   switch (testID) {
   case 0:
@@ -98,6 +99,28 @@ void leetcode_letters_histogram() {
   //     a : 4
   //     b : 2
   //     d : 1
+  string testStr = "a; b69ad*b%a^a;";
+
+  //HW0929
+  int i_a = 0;
+  int i_b = 0;
+  int i_d = 0;
+  while(testStr.find("a") != string::npos || testStr.find("b") != string::npos || testStr.find("d") != string::npos){
+    if(testStr.find("a") != string::npos){
+      i_a++;
+      testStr.erase(auto *ita = testStr.find("a"));
+    }
+    if(testStr.find("b") != string::npos){
+      i_b++;
+      testStr.erase(testStr.find("b"));
+    }
+    if(testStr.find("d") != string::npos){
+      i_d++;
+      testStr.erase(testStr.find("d"));
+    }
+  }
+  cout << i_a << ", " << i_b << ", " << i_d << endl;
+  
 }
 
 int findPrefix(vector<string> &words) {
@@ -132,23 +155,55 @@ void leetcode_find_num_digits() {
   string input = "98i6098kljgo987tglkujb.,j";
 
   int res = -1;
-  // TBD
+  //HW0929
+  //int zero =  (int)'0';
+  //0的ASCII code 
 
   printf("number of digits in string = %s \n", input.c_str());
-  printf(" => %d\n", res);
+  printf(" => %d (ans: 9)\n", res);
 }
+
+#define MERGE_SORTED_LIST_ALTER 1
 
 void leetcode_merge_sorted_lists() {
   vector<int> x({6, 8, 10, 20, 21, 30});
   vector<int> y({1, 3, 4, 7, 14, 16, 100, 110});
   vector<int> z;
 
+#if MERGE_SORTED_LIST_ALTER
+
+  while (!x.empty() || !y.empty()) {
+    // general case
+#if 0
+    vector<int>* p =  (!x.empty() && !y.empty())?
+      ( (x.front() < y.front() )?( &x ):( &y) ):
+      ( (!x.empty())?(&x ):( &y ) );
+#else
+    vector<int> *p = nullptr;
+    // p <= x, y
+    if (!x.empty() && !y.empty()) {
+      p = (x.front() < y.front()) ? (&x) : (&y);
+    } else if (!x.empty()) {
+      p = &x;
+    } else {
+      p = &y;
+    }
+#endif
+    // c.push_back( p->front())
+    // p->erase( head )
+    z.push_back(p->front());
+    p->erase(p->begin());
+
+    // ending condition
+    //  both x y empty()
+  }
+#else
   // Q: x and y are sorted data. merge x and y to z as a sorted data as well.
   //  z = {1, 3, 4, 6, 7, 8, 10, 14, 16, 20, 21, 30, 100, 110}
   //
   //  NOTE: time complexity must be O(N)
   // HW0922 : optional
-  //HW0925 : try to simplify / optimize the codes
+  // HW0925 : try to simplify / optimize the codes
   int c = 0;
   int ix = 0;
   int iy = 0;
@@ -156,7 +211,8 @@ void leetcode_merge_sorted_lists() {
   auto it_y = y.begin();
   while (c < x.size() + y.size()) {
     if (ix < x.size()) {
-      if (*it_x >= *it_y) {
+      // it_y != y.end()
+      if (it_y != y.end() && *it_x >= *it_y) {
         z.push_back(*it_y);
         it_y++;
         iy++;
@@ -173,6 +229,8 @@ void leetcode_merge_sorted_lists() {
       c++;
     }
   }
+#endif
+
   for (auto p : z) {
     printf("%d ", p);
   }
@@ -180,14 +238,91 @@ void leetcode_merge_sorted_lists() {
 }
 
 void basic_string_usage() {
+  //
+  //  https://cplusplus.com/reference/string/string/
+  //
+
   // C-style usage & ASCII codes
+  {
+    int x;  // 4 bytes = 32 bit integer [-2^31, 2^31-1]
+    char a; // 1 byte = 8 bit integer => 2^8 = 256 combination
+    // Signed char (char) : data range [-128, 127] = [-2^7, 2^7-1]
+    // unsigned char      : data range [0, 2^8-1]= [0, 255]
+    char name[7] = "John"; // {'J', 'o', 'h', 'n', '\0',  ,  }
+    printf("name = %s\n", name);
+  }
 
   // C++ style usage
+  //.size() : number of elements/
+  //.push_back(element) : append an element to the end
+  //.pop_back() : pop out the last element
+  //.begin() : the 1st iterator (第一項的memory address)
+  //.end() : the last iterator
+  //.front(): the 1st reference
+  //.back() : the last reference
+  //.erase( iterator ) : erase the element @ iterator position
+  //.erase(iterator 1, iterator 2) : erase the element(s) between
+  //.insert( iterator, element) : insert new element @ iterator position
+  //.clear() : clear everything
+  //.empty() : return true if .size() == 0
+  //.find(str) : find the matched "str" position in your string
+  //             string::npos : not found
+  {
+    string name = "John";
+    int pos= name.find("oh");
+    printf("find \"oh\" matched position in string %s = %d\n", name.c_str(), pos);
+
+    pos = name.find("apple");
+    printf("find \"apple\" matched position in string %s = %d\n", name.c_str(), pos);
+
+    string keyStr = "VK";
+    if(name.find(keyStr) != string::npos){
+      printf("found\n");
+    }
+    else{
+      printf("not found\n");
+    }
+
+    
+    
+  }
 
   // iterations
+  {
+    string str = "This is AT class";
+
+    for(auto ir : str){
+      cout << ir << flush;
+    }    
+  }
+
+  //erase
+  {
+    string str = "This is AT class";
+    //Q: erase "A" from str
+    string key = "AT";
+    int pos = str.find(key);
+    auto itPos = str.begin() + pos;
+    str.erase(itPos, itPos + key.size()); //erase "AT"
+    
+  }
+
+  //prefix and postfix //TBV
+  {
+    
+  }
+
+  //string to integer //TBV
+  {
+    
+  }
+  
 }
 
 void basic_vector_usage() {
+  //
+  // https://cplusplus.com/reference/vector/vector/
+  //
   //.size() : number of elements/
   //.push_back(element) : append an element to the end
   //.pop_back() : pop out the last element
@@ -595,28 +730,38 @@ void leetcode_shuffle_lists_iii() {
   printf("\n");
 }
 
-vector<int> shuffle_n_vector(vector<vector<int>>& data)
-{
+vector<int> shuffle_n_vector(vector<vector<int>> &data) {
   vector<int> res;
 
   //..res.push_back()
-  //HW0925
+  // HW0925
+  auto it = data.begin(); // it = iterator of data
+  while (it != data.end()) {
+    //    vector<int>& ir = *it;
 
+    while (!(*it).empty()) {
+      // general case
+      res.push_back((*it).front());
+      (*it).erase((*it).begin());
+    }
+    it++;
+  }
   return res;
 }
 
 void leetcode_shuffle_lists_iv() {
-  //Q : Given a list of vector, shuffle them to a single vector
+  // Q : Given a list of vector, shuffle them to a single vector
 
   vector<vector<int>> data;
-  data = {{2, 5, 3, 8, 1}, //a
-          {0, 1, 2},  //b
-          {4, 7, 1, 9, 0, 5} //c
-          };
+  data = {
+      {2, 5, 3, 8, 1},   // a
+      {0, 1, 2},         // b
+      {4, 7, 1, 9, 0, 5} // c
+  };
 
   vector<int> res = shuffle_n_vector(data);
 
-  for(auto ir : res){
+  for (auto ir : res) {
     printf("%d ", ir);
   }
   printf("\n");
