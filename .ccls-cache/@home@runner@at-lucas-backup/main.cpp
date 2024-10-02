@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <string>
 #include <vector>
 
 // Goolge : c++ keyword
@@ -12,7 +13,7 @@
 using namespace std;
 
 int main() {
-  int testID = 8;
+  int testID = 18;
 
   switch (testID) {
   case 0:
@@ -69,26 +70,95 @@ int main() {
   case 19:
     leetcode_find_num_prefix_matches();
     break;
-  case 30: // struct, class, object
-    basic_class_struct();
+  case 20: // new , dynamic allocation
+    basic_dynamic_memory_allocation();
+    break;
+  case 21:
+    leetcode_alternating_strings();
+    break;
+  case 22: // struct
+    basic_struct_usage();
+    break;
+  case 23: // standard sort
+    basic_std_sort();
+    break;
+  case 24: // struct, class, object
+    basic_class_usage_i();
+    break;
+  case 25:
+    leetcode_sort_test_results();
     break;
   default:
     printf("not a supported test ID : %d\n", testID);
     exit(-1);
   }
 
-  // string
-  // digit manipulation
-  // struct
-  // class
-  // std::sort
-  // unordered_map, map
-  // recursive
+  //pair, revisit test results
+  //unordered_map, revisit two sum
+  //map, revisit test results 
+  //recursive, power of two, revisit fibonacci, 
+  //binary tree basics, BF
+  
 
   return 0;
 }
 
-void basic_class_struct() {}
+void leetcode_alternating_strings(){
+  
+}
+
+void leetcode_sort_test_results() {}
+
+void basic_dynamic_memory_allocation() {
+  //static memory allocation
+  {
+    int a[10]; //X static memory
+
+    int* p = a;
+  }
+  //dynmaic memory allocation
+  {
+    int* p = new int[10]; //instance -> dynamic memory
+    delete[] p;
+
+    //int* obj = new int(); 
+    int* obj = new int; //obj => 指針 => memory address
+    *obj = 0; //=> new int 實際上的reference
+    delete obj;
+    
+    //constructor
+    int* tmp = new int(0); //init. 0
+    printf("%d \n", *tmp);
+    delete tmp;    
+
+    //example: vector
+    vector<int>* v = new vector<int>[10]; // vector< vector<int> > v
+    delete[] v;
+
+    //Example: vector
+    vector<int>* vPtr = new vector<int>({3, 1, 2});
+    // {3, 1, 2}
+    (*vPtr).push_back(0); //{3, 1, 2, 0}
+
+    //simplifed version
+    vPtr->push_back(0); //{3, 1, 2, 0, 0}
+    
+    delete vPtr;
+    
+  }
+  //C++ vector
+  {
+    vector<int> a;
+  }
+  
+}
+
+void basic_struct_usage() {}
+
+void basic_class_usage_i() {}
+
+void basic_class_usage() {}
+
 void leetcode_letters_histogram() {
   // Q : print out the histogram of alphbet apperance with alphbet order.
   //
@@ -98,11 +168,48 @@ void leetcode_letters_histogram() {
   //     a : 4
   //     b : 2
   //     d : 1
+  string testStr = "a; b69ad*b%a^a;";
+  // HW1002
+  //  algorithm
+  //  ASCII difference = char -'a'
+  //
+  //  METHOD 0: Look-Up Table (LUT) / Hash table 
+  //      dynamic memory allocation : int* book = new int[26]; => init 0
+  //  METHOD 1: vector<int> book(26, 0);
+  //            vector<int> book; book.resize(26) <== TO be check
+   
+
+  // HW0929
+  int i_a = 0;
+  int i_b = 0;
+  int i_d = 0;
+  auto it = testStr.begin();
+  // general case
+  //
+  // ending condition
+  while (testStr.find("a") != string::npos ||
+         testStr.find("b") != string::npos ||
+         testStr.find("d") != string::npos) {
+    // general case
+    if (testStr.find("a") != string::npos) {
+      i_a++;
+      testStr.erase(it + testStr.find("a"));
+    }
+    if (testStr.find("b") != string::npos) {
+      i_b++;
+      testStr.erase(it + testStr.find("b"));
+    }
+    if (testStr.find("d") != string::npos) {
+      i_d++;
+      testStr.erase(it + testStr.find("d"));
+    }
+  }
+  cout << i_a << ", " << i_b << ", " << i_d << endl;
 }
 
-int findPrefix(vector<string> &words) {
-  // TBD
-  return -1;
+int findNumPrefix(vector<string> &words) {
+  //HW1002 
+  return -1; //TBD
 }
 
 void leetcode_find_num_prefix_matches() {
@@ -121,9 +228,9 @@ void leetcode_find_num_prefix_matches() {
   //   number of matches : 3
   //
 
-  vector<string> words = {"abcd", "bce", "a", "abe", "ced"};
+  vector<string> words = {"abcd", "bce", "bab", "abe", "cabe", "ab"};
 
-  int num = findPrefix(words);
+  int num = findNumPrefix(words);
 
   printf("number of matches: %d (ans: 3)\n", num);
 }
@@ -131,24 +238,67 @@ void leetcode_find_num_prefix_matches() {
 void leetcode_find_num_digits() {
   string input = "98i6098kljgo987tglkujb.,j";
 
-  int res = -1;
-  // TBD
-
+  //HW1002 : use ASCII difference to re-implement the solution.
+  
+  // int res = -1;
+  // HW0929
+  // int zero =  (int)'0';
+  // 0的ASCII code
+  int digits = 0;
+  int index = 0;
+  auto it = input.begin();
+  while (index < input.size()) {
+    if ((int)*it > 47 && (int)*it < 58) {
+      digits++;
+    }
+    index++;
+    it++;
+  }
   printf("number of digits in string = %s \n", input.c_str());
-  printf(" => %d\n", res);
+  printf(" => %d (ans: 9)\n", digits);
 }
+
+#define MERGE_SORTED_LIST_ALTER 1
 
 void leetcode_merge_sorted_lists() {
   vector<int> x({6, 8, 10, 20, 21, 30});
   vector<int> y({1, 3, 4, 7, 14, 16, 100, 110});
   vector<int> z;
 
+#if MERGE_SORTED_LIST_ALTER
+
+  while (!x.empty() || !y.empty()) {
+    // general case
+#if 0
+    vector<int>* p =  (!x.empty() && !y.empty())?
+      ( (x.front() < y.front() )?( &x ):( &y) ):
+      ( (!x.empty())?(&x ):( &y ) );
+#else
+    vector<int> *p = nullptr;
+    // p <= x, y
+    if (!x.empty() && !y.empty()) {
+      p = (x.front() < y.front()) ? (&x) : (&y);
+    } else if (!x.empty()) {
+      p = &x;
+    } else {
+      p = &y;
+    }
+#endif
+    // c.push_back( p->front())
+    // p->erase( head )
+    z.push_back(p->front());
+    p->erase(p->begin());
+
+    // ending condition
+    //  both x y empty()
+  }
+#else
   // Q: x and y are sorted data. merge x and y to z as a sorted data as well.
   //  z = {1, 3, 4, 6, 7, 8, 10, 14, 16, 20, 21, 30, 100, 110}
   //
   //  NOTE: time complexity must be O(N)
   // HW0922 : optional
-  //HW0925 : try to simplify / optimize the codes
+  // HW0925 : try to simplify / optimize the codes
   int c = 0;
   int ix = 0;
   int iy = 0;
@@ -156,7 +306,8 @@ void leetcode_merge_sorted_lists() {
   auto it_y = y.begin();
   while (c < x.size() + y.size()) {
     if (ix < x.size()) {
-      if (*it_x >= *it_y) {
+      // it_y != y.end()
+      if (it_y != y.end() && *it_x >= *it_y) {
         z.push_back(*it_y);
         it_y++;
         iy++;
@@ -173,6 +324,8 @@ void leetcode_merge_sorted_lists() {
       c++;
     }
   }
+#endif
+
   for (auto p : z) {
     printf("%d ", p);
   }
@@ -180,14 +333,118 @@ void leetcode_merge_sorted_lists() {
 }
 
 void basic_string_usage() {
+  //
+  //  https://cplusplus.com/reference/string/string/
+  //
+
   // C-style usage & ASCII codes
+  {
+    int x;  // 4 bytes = 32 bit integer [-2^31, 2^31-1]
+    char a; // 1 byte = 8 bit integer => 2^8 = 256 combination
+    // Signed char (char) : data range [-128, 127] = [-2^7, 2^7-1]
+    // unsigned char      : data range [0, 2^8-1]= [0, 255]
+    char name[7] = "John"; // {'J', 'o', 'h', 'n', '\0',  ,  }
+    printf("name = %s\n", name);
+  }
 
   // C++ style usage
+  //.size() : number of elements/
+  //.push_back(element) : append an element to the end
+  //.pop_back() : pop out the last element
+  //.begin() : the 1st iterator (第一項的memory address)
+  //.end() : the last iterator
+  //.front(): the 1st reference
+  //.back() : the last reference
+  //.erase( iterator ) : erase the element @ iterator position
+  //.erase(iterator 1, iterator 2) : erase the element(s) between
+  //.insert( iterator, element) : insert new element @ iterator position
+  //.clear() : clear everything
+  //.empty() : return true if .size() == 0
+  //.find(str) : find the matched "str" position in your string
+  //             string::npos : not found
+  {
+    string name = "John";
+    int pos = name.find("oh");
+    printf("find \"oh\" matched position in string %s = %d\n", name.c_str(),
+           pos);
+
+    pos = name.find("apple");
+    printf("find \"apple\" matched position in string %s = %d\n", name.c_str(),
+           pos);
+
+    string keyStr = "VK";
+    if (name.find(keyStr) != string::npos) {
+      printf("found\n");
+    } else {
+      printf("not found\n");
+    }
+  }
 
   // iterations
+  {
+    string str = "This is AT class";
+
+    for (auto ir : str) {
+      cout << ir << flush;
+    }
+  }
+
+  // erase
+  {
+    string str = "This is AT class";
+    // Q: erase "A" from str
+    string key = "AT";
+    int pos = str.find(key);
+    auto itPos = str.begin() + pos;
+    str.erase(itPos, itPos + key.size()); // erase "AT"
+  }
+
+  // prefix and postfix //TBV
+  {
+    // all prefixes in "abc" -> "a", "ab" , "abc"
+    // all postfixes in "abc" -> "c", "bc", "abc"
+    //Q: check if "xy" is a prefix in string;
+
+    //METHOD 1: .find(), check if position is 0- O(N)
+    string strtmp= "xyz";
+    //use .find("xy") == 0 to decide whether is's prefix or not
+    if(strtmp.find("xy") == 0) 
+    {
+      printf("must be a prefix");
+    }
+
+    //METHOD 2: ASCII code diff - O(N)
+    string prefix = "xy"; //prefix string
+    bool gotPrefix = true;
+    for(int i=0; i< prefix.size(); i++){
+      int diff = prefix[i] - strtmp[i];
+      if(diff != 0){
+        gotPrefix = false;
+        break;
+      }
+    }
+    printf("prefix : %d\n", gotPrefix ? 1 : 0);
+    
+
+  }
+
+  // string to integer
+  // C++ string : stoi()
+  // C string : atoi()
+  {
+    //C++ style : string
+    string info = "26";
+    int infoInt = stoi(info);
+    
+    // C style : char data[10]
+    int infoTmp = atoi(info.c_str());    
+  }
 }
 
 void basic_vector_usage() {
+  //
+  // https://cplusplus.com/reference/vector/vector/
+  //
   //.size() : number of elements/
   //.push_back(element) : append an element to the end
   //.pop_back() : pop out the last element
@@ -595,28 +852,38 @@ void leetcode_shuffle_lists_iii() {
   printf("\n");
 }
 
-vector<int> shuffle_n_vector(vector<vector<int>>& data)
-{
+vector<int> shuffle_n_vector(vector<vector<int>> &data) {
   vector<int> res;
 
   //..res.push_back()
-  //HW0925
+  // HW0925
+  auto it = data.begin(); // it = iterator of data
+  while (it != data.end()) {
+    //    vector<int>& ir = *it;
 
+    while (!(*it).empty()) {
+      // general case
+      res.push_back((*it).front());
+      (*it).erase((*it).begin());
+    }
+    it++;
+  }
   return res;
 }
 
 void leetcode_shuffle_lists_iv() {
-  //Q : Given a list of vector, shuffle them to a single vector
+  // Q : Given a list of vector, shuffle them to a single vector
 
   vector<vector<int>> data;
-  data = {{2, 5, 3, 8, 1}, //a
-          {0, 1, 2},  //b
-          {4, 7, 1, 9, 0, 5} //c
-          };
+  data = {
+      {2, 5, 3, 8, 1},   // a
+      {0, 1, 2},         // b
+      {4, 7, 1, 9, 0, 5} // c
+  };
 
   vector<int> res = shuffle_n_vector(data);
 
-  for(auto ir : res){
+  for (auto ir : res) {
     printf("%d ", ir);
   }
   printf("\n");
@@ -1136,3 +1403,5 @@ void leetcode_even_odd_diff() {
   diff = funcEvenOddDiff(X);
   printf("diff =%d (ans : 1)\n", diff);
 }
+
+void basic_std_sort() {}

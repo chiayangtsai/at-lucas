@@ -14,7 +14,13 @@ void leetcode_even_odd_diff();
 void basic_string_usage();
 void leetcode_merge_sorted_lists();
 void leetcode_letters_histogram();
-void basic_class_struct();
 void leetcode_find_num_digits();
 void leetcode_find_num_prefix_matches();
 void leetcode_shuffle_lists_iv();
+void basic_std_sort();
+void basic_struct_usage();
+void basic_dynamic_memory_allocation();
+void basic_class_usage_i();
+void leetcode_sort_test_results();
+void leetcode_alternating_strings();
+
