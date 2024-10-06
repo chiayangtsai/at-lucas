@@ -79,81 +79,151 @@ int main() {
   case 22: // struct
     basic_struct_usage();
     break;
-  case 23: // standard sort
-    basic_std_sort();
+  case 23:
+    leetcode_sort_student_data();
     break;
-  case 24: // struct, class, object
+  case 24: // class
     basic_class_usage_i();
     break;
-  case 25:
-    leetcode_sort_test_results();
+  case 26: // standard sort
+    basic_std_sort();
     break;
   default:
     printf("not a supported test ID : %d\n", testID);
     exit(-1);
   }
 
-  //pair, revisit test results
-  //unordered_map, revisit two sum
-  //map, revisit test results 
-  //recursive, power of two, revisit fibonacci, 
-  //binary tree basics, BF
-  
+  // pair, revisit test results
+  // unordered_map, revisit two sum
+  // map, revisit test results
+  // recursive, power of two, revisit fibonacci,
+  // binary tree basics, BF
 
   return 0;
 }
 
-void leetcode_alternating_strings(){
-  
+int getMaxAlternatingStringLength(int k, string in) { return -1; }
+
+void leetcode_alternating_strings() {
+  // https://zerojudge.tw/ShowProblem?problemid=c462
+  // APCS 2017
+  //
+  // k-alternating string:
+  //          StRiNg => 1-alternating string
+  //          heLLow => 2-alternating string
+  //          aBBaaa => NOT alternating string
+  //          aaaAAbbCCCC => NOT alternating string
+
+  // Q: Given k and a string, find the maximum sub-string length which matches
+  // k-alternating string condition. Example:
+  //       Given k = 2, string = "aBBaaa" => the maximum k-alternating string is
+  //       BBaa, Answer:  4 Given k= 1, string = "BaBaBB" => the maximum
+  //       k-alternating string is BaBaB, Anser : 5
+
+  string in;
+  int k;
+  int maxLen;
+
+  k = 1;
+  in = "aBBdaaa";
+  maxLen = getMaxAlternatingStringLength(k, in);
+  printf("k=%d, string is %s => max len = %d (ans: 2)\n", k, in.c_str(),
+         maxLen);
+
+  k = 3;
+  in = "DDaasAAbbCC";
+  maxLen = getMaxAlternatingStringLength(k, in);
+  printf("k=%d, string is %s => max len = %d (ans: 3)\n", k, in.c_str(),
+         maxLen);
+
+  k = 2;
+  in = "aafAXbbCDCCC";
+  maxLen = getMaxAlternatingStringLength(k, in);
+  printf("k=%d, string is %s => max len = %d (ans: 8)\n", k, in.c_str(),
+         maxLen);
+
+  k = 3;
+  in = "DDaaAAbbCC";
+  maxLen = getMaxAlternatingStringLength(k, in);
+  printf("k=%d, string is %s => max len = %d (ans: 0)\n", k, in.c_str(),
+         maxLen);
 }
 
-void leetcode_sort_test_results() {}
-
 void basic_dynamic_memory_allocation() {
-  //static memory allocation
+  // static memory allocation
   {
-    int a[10]; //X static memory
+    int a[10]; // X static memory
 
-    int* p = a;
+    int *p = a;
   }
-  //dynmaic memory allocation
+  // dynmaic memory allocation
   {
-    int* p = new int[10]; //instance -> dynamic memory
+    int *p = new int[10]; // instance -> dynamic memory
     delete[] p;
 
-    //int* obj = new int(); 
-    int* obj = new int; //obj => 指針 => memory address
-    *obj = 0; //=> new int 實際上的reference
+    // int* obj = new int();
+    int *obj = new int; // obj => 指針 => memory address
+    *obj = 0;           //=> new int 實際上的reference
     delete obj;
-    
-    //constructor
-    int* tmp = new int(0); //init. 0
-    printf("%d \n", *tmp);
-    delete tmp;    
 
-    //example: vector
-    vector<int>* v = new vector<int>[10]; // vector< vector<int> > v
+    // constructor
+    int *tmp = new int(0); // init. 0
+    printf("%d \n", *tmp);
+    delete tmp;
+
+    // example: vector
+    vector<int> *v = new vector<int>[10]; // vector< vector<int> > v
     delete[] v;
 
-    //Example: vector
-    vector<int>* vPtr = new vector<int>({3, 1, 2});
+    // Example: vector
+    vector<int> *vPtr = new vector<int>({3, 1, 2});
     // {3, 1, 2}
     (*vPtr).push_back(0); //{3, 1, 2, 0}
 
-    //simplifed version
+    // simplifed version
     vPtr->push_back(0); //{3, 1, 2, 0, 0}
-    
+
     delete vPtr;
-    
   }
-  //C++ vector
-  {
-    vector<int> a;
-  }
-  
+  // C++ vector
+  { vector<int> a; }
 }
 
-void basic_struct_usage() {}
+void basic_struct_usage() {
+
+  vector<int> sID({3, 2, 6, 4, 8, 10, 9});
+  vector<string> sName(
+      {"John", "Jack", "Topher", "Ku", "Elly", "Kim", "Hailey"});
+
+  // Q: sorting student data by score
+  //     2 Jack
+  //     3 John
+  //     4 Ku
+  //     6 Topher
+  //     8 Elly
+  //     9 Hailey
+  //    10 Kim
+
+  // struct
+
+  // init
+
+  // dynamic allocation
+
+  // vector
+
+  // copy
+
+  // TBV : operator
+}
+
+void leetcode_sort_student_data() {
+  vector<int> sID({3, 2, 6, 4, 8, 10, 9});
+  vector<string> sName(
+      {"John", "Jack", "Topher", "Ku", "Elly", "Kim", "Hailey"});
+
+  // Q: sorting student data by initial letter of names (from A- Z)
+}
 
 void basic_class_usage_i() {}
 
@@ -173,11 +243,19 @@ void leetcode_letters_histogram() {
   //  algorithm
   //  ASCII difference = char -'a'
   //
-  //  METHOD 0: Look-Up Table (LUT) / Hash table 
+  //  METHOD 0: Look-Up Table (LUT) / Hash table
   //      dynamic memory allocation : int* book = new int[26]; => init 0
   //  METHOD 1: vector<int> book(26, 0);
   //            vector<int> book; book.resize(26) <== TO be check
-   
+  vector<int> alphabet(26, 0);
+  for (auto it = testStr.begin(); it != testStr.end(); it++) {
+    if (96 < (int)*it && (int)*it < 123) {
+      alphabet[((int)*it - 122) + 25] += 1;
+    }
+  }
+  for (int i = 0; i < alphabet.size(); i++) {
+    cout << alphabet[i] << endl;
+  }
 
   // HW0929
   int i_a = 0;
@@ -208,8 +286,15 @@ void leetcode_letters_histogram() {
 }
 
 int findNumPrefix(vector<string> &words) {
-  //HW1002 
-  return -1; //TBD
+  // HW1002
+  int matchedres = 0;
+  for (int i = 0; i < words.size(); i++) {
+    string str = words[i];
+    if (str.find("ab") != string::npos && str.find("ab") == 0) {
+      matchedres += 1;
+    }
+  }
+  return matchedres; // TBD
 }
 
 void leetcode_find_num_prefix_matches() {
@@ -238,13 +323,22 @@ void leetcode_find_num_prefix_matches() {
 void leetcode_find_num_digits() {
   string input = "98i6098kljgo987tglkujb.,j";
 
-  //HW1002 : use ASCII difference to re-implement the solution.
-  
+  // HW1002 : use ASCII difference to re-implement the solution.
+  int digits = 0;
+  int index = 0;
+  auto it = input.begin();
+  while (index < input.size()) {
+    if (0 <= (int)*it - '0' && (int)*it - '0' < 10) {
+      digits++;
+    }
+    index++;
+    it++;
+  }
   // int res = -1;
   // HW0929
   // int zero =  (int)'0';
   // 0的ASCII code
-  int digits = 0;
+  /*int digits = 0;
   int index = 0;
   auto it = input.begin();
   while (index < input.size()) {
@@ -253,7 +347,7 @@ void leetcode_find_num_digits() {
     }
     index++;
     it++;
-  }
+  }*/
   printf("number of digits in string = %s \n", input.c_str());
   printf(" => %d (ans: 9)\n", digits);
 }
@@ -403,41 +497,38 @@ void basic_string_usage() {
   {
     // all prefixes in "abc" -> "a", "ab" , "abc"
     // all postfixes in "abc" -> "c", "bc", "abc"
-    //Q: check if "xy" is a prefix in string;
+    // Q: check if "xy" is a prefix in string;
 
-    //METHOD 1: .find(), check if position is 0- O(N)
-    string strtmp= "xyz";
-    //use .find("xy") == 0 to decide whether is's prefix or not
-    if(strtmp.find("xy") == 0) 
-    {
+    // METHOD 1: .find(), check if position is 0- O(N)
+    string strtmp = "xyz";
+    // use .find("xy") == 0 to decide whether is's prefix or not
+    if (strtmp.find("xy") == 0) {
       printf("must be a prefix");
     }
 
-    //METHOD 2: ASCII code diff - O(N)
-    string prefix = "xy"; //prefix string
+    // METHOD 2: ASCII code diff - O(N)
+    string prefix = "xy"; // prefix string
     bool gotPrefix = true;
-    for(int i=0; i< prefix.size(); i++){
+    for (int i = 0; i < prefix.size(); i++) {
       int diff = prefix[i] - strtmp[i];
-      if(diff != 0){
+      if (diff != 0) {
         gotPrefix = false;
         break;
       }
     }
     printf("prefix : %d\n", gotPrefix ? 1 : 0);
-    
-
   }
 
   // string to integer
   // C++ string : stoi()
   // C string : atoi()
   {
-    //C++ style : string
+    // C++ style : string
     string info = "26";
     int infoInt = stoi(info);
-    
+
     // C style : char data[10]
-    int infoTmp = atoi(info.c_str());    
+    int infoTmp = atoi(info.c_str());
   }
 }
 

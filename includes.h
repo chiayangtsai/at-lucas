@@ -21,6 +21,8 @@ void basic_std_sort();
 void basic_struct_usage();
 void basic_dynamic_memory_allocation();
 void basic_class_usage_i();
-void leetcode_sort_test_results();
+
 void leetcode_alternating_strings();
+void leetcode_sort_student_data();
+
 
