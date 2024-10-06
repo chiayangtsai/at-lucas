@@ -13,7 +13,7 @@
 using namespace std;
 
 int main() {
-  int testID = 18;
+  int testID = 22;
 
   switch (testID) {
   case 0:
@@ -102,7 +102,10 @@ int main() {
   return 0;
 }
 
-int getMaxAlternatingStringLength(int k, string in) { return -1; }
+int getMaxAlternatingStringLength(int k, string in) { 
+  //HW1006
+  return -1; //TO BE MODIFIED
+}
 
 void leetcode_alternating_strings() {
   // https://zerojudge.tw/ShowProblem?problemid=c462
@@ -192,8 +195,7 @@ void basic_dynamic_memory_allocation() {
 void basic_struct_usage() {
 
   vector<int> sID({3, 2, 6, 4, 8, 10, 9});
-  vector<string> sName(
-      {"John", "Jack", "Topher", "Ku", "Elly", "Kim", "Hailey"});
+  vector<string> sName({"John", "Jack", "Topher", "Ku", "Elly", "Kim", "Hailey"});
 
   // Q: sorting student data by score
   //     2 Jack
@@ -204,13 +206,61 @@ void basic_struct_usage() {
   //     9 Hailey
   //    10 Kim
 
-  // struct
+  // struct : for data (collective information)
+  struct SStuData
+  {
+    //constructor (default, overriding)
+    SStuData() //overriding the original default constructor
+    {
+      id = -1;
+      name = "UNKNOWN";
+    }
+
+    //constructor (overloading)
+    SStuData(int i, string n){
+      id = i;
+      name = n;
+    }
+  
+    int id;
+    string name;
+  };
 
   // init
+  {
+    SStuData oneStudent;
+    oneStudent.id = 2;
+    oneStudent.name = "Jack";
 
-  // dynamic allocation
+    SStuData tmp;
+    printf("id= %d, name = %s\n", tmp.id, tmp.name.c_str());
+    
+    SStuData obj(2, "Jack");
+    printf("id= %d, name = %s\n", obj.id, obj.name.c_str());
 
+  }
+  
   // vector
+  {
+    vector<SStuData> data;
+    SStuData obj(3, "Lucas");
+    data.push_back(obj );
+
+    data.push_back(  SStuData(100, "VK")  );
+  }
+  // dynamic allocation
+  {
+    SStuData* data = new SStuData;
+    data->id = 10;
+    data->name = "Mary";
+
+
+    SStuData* data2 = new SStuData(10, "Mary");
+
+    //TBD : array
+  }
+  
+
 
   // copy
 
@@ -229,6 +279,7 @@ void basic_class_usage_i() {}
 
 void basic_class_usage() {}
 
+#define LETTER_HIST_ALTER 1
 void leetcode_letters_histogram() {
   // Q : print out the histogram of alphbet apperance with alphbet order.
   //
@@ -247,16 +298,34 @@ void leetcode_letters_histogram() {
   //      dynamic memory allocation : int* book = new int[26]; => init 0
   //  METHOD 1: vector<int> book(26, 0);
   //            vector<int> book; book.resize(26) <== TO be check
+
+  //  'a' -'a' = 0
+  //  'b' -'a' = 1
+  //  'c' -'a' = 2
+  //  ..
+  //  'z' - 'a' = 25
+  
   vector<int> alphabet(26, 0);
   for (auto it = testStr.begin(); it != testStr.end(); it++) {
+#if LETTER_HIST_ALTER    
+    int charDiff = (int)(*it) - 'a';
+
+    if(charDiff >=0 && charDiff < 26){
+      alphabet[charDiff] ++;
+    }
+        
+#else
     if (96 < (int)*it && (int)*it < 123) {
       alphabet[((int)*it - 122) + 25] += 1;
     }
+#endif    
   }
   for (int i = 0; i < alphabet.size(); i++) {
-    cout << alphabet[i] << endl;
+    if (alphabet[i] != 0)
+      cout << (char)('a'+ i) << " : " << alphabet[i] << endl;
   }
 
+#if 0
   // HW0929
   int i_a = 0;
   int i_b = 0;
@@ -283,18 +352,19 @@ void leetcode_letters_histogram() {
     }
   }
   cout << i_a << ", " << i_b << ", " << i_d << endl;
+#endif
 }
 
-int findNumPrefix(vector<string> &words) {
+int findNumPrefix(vector<string> &words, string keyStr) {
   // HW1002
   int matchedres = 0;
   for (int i = 0; i < words.size(); i++) {
     string str = words[i];
-    if (str.find("ab") != string::npos && str.find("ab") == 0) {
+    if (str.find(keyStr) == 0) {
       matchedres += 1;
     }
   }
-  return matchedres; // TBD
+  return matchedres;
 }
 
 void leetcode_find_num_prefix_matches() {
@@ -312,10 +382,10 @@ void leetcode_find_num_prefix_matches() {
   //
   //   number of matches : 3
   //
-
+  string keyStr = "ab";
   vector<string> words = {"abcd", "bce", "bab", "abe", "cabe", "ab"};
 
-  int num = findNumPrefix(words);
+  int num = findNumPrefix(words, keyStr);
 
   printf("number of matches: %d (ans: 3)\n", num);
 }
