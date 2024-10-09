@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 // Goolge : c++ keyword
 //  - Cplusplus
@@ -13,7 +14,7 @@
 using namespace std;
 
 int main() {
-  int testID = 22;
+  int testID = 26;
 
   switch (testID) {
   case 0:
@@ -101,10 +102,41 @@ int main() {
 
   return 0;
 }
-
+bool lowercase(char c)
+{
+  if(c >= 'a' && c <= 'z') return true;
+  if(c >= 'A' && c <= 'Z') return false;  
+  
+  return false;
+}
 int getMaxAlternatingStringLength(int k, string in) { 
   //HW1006
-  return -1; //TO BE MODIFIED
+  //a~z : 0 <= char - 'a' <= 25
+  //A~Z : 0 <= char - 'A' <= 25
+
+  auto it = in.begin();
+  int contlen = 0;  //legnth of current contiguous string in the same case
+  int tlen = 0; //maximum value of contlen
+  bool lowercase = false;
+  while(it != in.end()){ //lowercase(*it)
+    for(int i = 0; i<k; i++){
+      if(0 <= *it - 'a' && *it - 'a' <= 25){
+        if(0 <= *(it+1) - 'a' && *(it+1) - 'a' <= 25){ //solution does not work for k=1
+          contlen++;
+        }
+      }
+      else if(0 <= *it - 'A' && *it - 'A' <= 25){
+        if(0 <= *(it+1) - 'A' && *(it+1) - 'A' <= 25){
+          contlen++;
+        }
+      }
+    }
+    if(contlen > tlen) tlen = contlen;
+    it += k;
+  }
+    
+    
+  return tlen; //TO BE MODIFIED
 }
 
 void leetcode_alternating_strings() {
@@ -123,6 +155,7 @@ void leetcode_alternating_strings() {
   //       BBaa, Answer:  4 Given k= 1, string = "BaBaBB" => the maximum
   //       k-alternating string is BaBaB, Anser : 5
 
+  //HW1009 : review
   string in;
   int k;
   int maxLen;
@@ -150,6 +183,13 @@ void leetcode_alternating_strings() {
   maxLen = getMaxAlternatingStringLength(k, in);
   printf("k=%d, string is %s => max len = %d (ans: 0)\n", k, in.c_str(),
          maxLen);
+
+  k =2;
+  in = "AaCCddEjWWiiKKzz";
+  maxLen = getMaxAlternatingStringLength(k, in);
+  printf("k=%d, string is %s => max len = %d (ans: 8)\n", k, in.c_str(),
+         maxLen);
+
 }
 
 void basic_dynamic_memory_allocation() {
@@ -253,18 +293,89 @@ void basic_struct_usage() {
     SStuData* data = new SStuData;
     data->id = 10;
     data->name = "Mary";
-
+    delete data;
 
     SStuData* data2 = new SStuData(10, "Mary");
+    delete data2;
 
-    //TBD : array
+    //array
+    SStuData* array = new SStuData[10];
+    delete[] array;
   }
   
 
 
   // copy
+  {
+    SStuData* data = new SStuData;
+    data->id = 10;
+    data->name = "Mary";
 
-  // TBV : operator
+    SStuData obj;
+    obj = *data;
+    
+    
+    delete data;    
+  }
+
+  //copy exception
+  {
+    struct TMPMEMO
+    {
+      //constructor : used when obj is going to be created
+      TMPMEMO(){
+        ptr = nullptr;
+      }
+
+      TMPMEMO(int s){
+        this->size = s;
+        this->ptr = new int[s];
+      }
+    
+      //destructor : used when obj is going to be destroyed
+      ~TMPMEMO(){
+        if(ptr != nullptr){
+          delete[] ptr;
+        }
+      }
+
+      TMPMEMO& operator= (TMPMEMO& src){
+        //exception
+        if(ptr == nullptr){
+          size = src.size;
+          ptr = new int[src.size];
+        }
+        else{
+          delete ptr;
+          size = src.size;
+          ptr = new int[src.size];
+        }
+        
+        //general
+        for(int i=0; i< size; i++) ptr[i] = src.ptr[i];
+        
+        return *this;
+      }
+    
+      int size;
+      int* ptr;
+    };
+
+    TMPMEMO obj1(10);
+    for(int i=0; i< obj1.size; i++) obj1.ptr[i] = 5;
+
+    TMPMEMO obj2(10);
+    for(int i=0; i< obj2.size; i++) obj2.ptr[i] = obj1.ptr[i];
+
+    //Q: use vector for TMPMEMO objects ? => there is no well-defined "=" operator
+
+    TMPMEMO obj3;
+    obj3 = obj1;
+
+    vector<TMPMEMO> v;
+    v.push_back(TMPMEMO(5));
+  }
+
 }
 
 void leetcode_sort_student_data() {
@@ -272,7 +383,27 @@ void leetcode_sort_student_data() {
   vector<string> sName(
       {"John", "Jack", "Topher", "Ku", "Elly", "Kim", "Hailey"});
 
-  // Q: sorting student data by initial letter of names (from A- Z)
+  struct StuData{
+    //constructor
+    StuData(int i, string n){
+      id = i;
+      name = n;
+    }
+    int id;
+    string name;
+  };
+
+  vector<StuData> data;
+  for(int i=0; i< sID.size(); i++)
+  {
+    data.push_back( StuData(sID[i], sName[i]));
+    printf("%d %s\n", data[i].id, data[i].name.c_str());
+  }
+
+  // Q: sorting student data by initial letter of names (from A- Z). Print the results
+  // HW1009 : using bubble sort
+  
+  
 }
 
 void basic_class_usage_i() {}
@@ -1095,6 +1226,7 @@ void leetcode_bubble_sort() {
   printf("\n");
 
   // ascending sort (由小排到大- 左邊是小, 右邊是大)
+  // time complexity : O(N^2)
   for (int j = inSize; j > 1; j--) {           // j: data size
     for (int comp = 0; comp < j - 1; comp++) { // comp: number of comparison
       if (in[comp] > in[comp + 1]) {
@@ -1565,4 +1697,22 @@ void leetcode_even_odd_diff() {
   printf("diff =%d (ans : 1)\n", diff);
 }
 
-void basic_std_sort() {}
+void basic_std_sort() {
+  // time complexity : 
+  // bubble sort : O(N^2)
+  // std sort : O(N logN)  <== heap sort, merge sort, quick sort (middle level)
+
+  //sort(vector starting iterator, vector ending iterator, compare)
+  vector<int> a({3, 1, 6, 2, 5, 4, 0});
+
+  sort(a.begin(), a.begin()+3);
+  for(auto& ir : a) printf("%d ", ir);
+  printf("\n");
+
+  sort(a.begin(), a.end());
+  for(auto& ir : a) printf("%d ", ir);
+  printf("\n");
+
+  //TBV : customized sorting to solve HW1009 problem.
+  
+}
